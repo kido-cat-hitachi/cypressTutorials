@@ -1,0 +1,20 @@
+Cách để cài đặt:
+    npm install cypress --save-dev
+    yarn add cypress --dev
+Cách để chạy:
+    npx cypress open
+    yarn run cypress open
+    ./node_modules/.bin/cypress open
+
+Nội dung bài học:
+    Những loại kiểm tra mà cypress hỗ trợ:
+    1: Kiểm tra E2E
+        là kỹ thuật kiểm tra ứng dụng từ trình duyệt web. Cũng như tích hợp với các dịch vụ API.
+        Lợi ích:
+            Đảm bảo ứng dụng hoạt động.
+            ....
+        Khó khăn:
+            Khó thiết lập, chạy cũng như nâng cấp...
+
+
+    
