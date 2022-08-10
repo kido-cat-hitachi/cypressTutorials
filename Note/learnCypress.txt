@@ -18,3 +18,43 @@ Nội dung bài học:
 
 
     
+Cấu trúc thư mục của 1 project cypress:
+    cypress
+        -->downloads: 
+        -->e2e: các trường hợp thử nghiệm (code của test E2E)
+        -->fixtures: Dữ liệu kiểm tra dưới dạng key-value (json file)
+        -->support: các phương thức có thể sử dụng lại hoặc các lệnh tùy chỉnh, có thể dùng bởi các case thử nghiệm 
+         
+Nhìn chung cypress tuân thủ theo bộ khung của Js, bộ khung cơ bản như sau:
+    Tên của bộ thử nghiệm phải được nằm ở trong describe func 
+        Tên test case phải trong bộ thử nghiệm của nó 
+    các bước kiểm tra cần phải nằm trong cùng 1 khối với bộ thử nghiệm 
+
+    ví dự cơ bản:
+        // tên bộ thử nghiệm
+        describe('tên bộ thử nghiệm Test', function () {
+            // tên của Test case
+            it('Scenario 1', function (){
+                // test step for URL launching
+                cy.visit("https://www.google.com/");
+            });
+        });
+
+Để chạy cypress từ cmd ta dùng 
+    ./node_modules/.bin/cypress run
+    (sẽ chạy toàn bộ kịch bản hiện đang có)
+Để chạy một tệp lệnh cụ thể thì ta dùng:
+    ./node_modules/.bin/cypress run --spec "path of file"
+
+Các browser đang được hỗ trợ là:  
+    +Chrome
+    +Edge
+    +Electron
+    ==> sử dụng chạy với câu lệnh:
+        ./node_modules/.bin/cypress run -- browser chrome
+
+Các lệnh cơ bản
+    and
+    as
+    blur
+    
