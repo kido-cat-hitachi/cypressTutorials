@@ -57,4 +57,37 @@ Các lệnh cơ bản
     and
     as
     blur
+    check 
+    children
+    clear
+    clearCookie
+    clearCookies
+    clearLocalStorage
+    click
+    contains
+    dblclick
+    debug
+    document
+    each
+    end 
+    eq
+    exec
+    find 
+    first
+    get
+    getCookie
+    getCookies
+    go
+    visit
+    next
+    parent
+    should
+    wait
+    viewport
+    log
+    reload
+    
+    
+    
+    
     
