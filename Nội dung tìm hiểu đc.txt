@@ -1,0 +1,120 @@
+
+Tìm hiểu về DOM và ứng dụng của nó trong Cypress
+	DOM là gì ?
+		Document Object Model of the page...
+	ok vậy làm gì với DOM trong Cypress:
+		Tìm 1 DOM để tương tác: 
+			Tìm bằng ID, class name, tag name, CSS selectors, HTML object collections...
+
+
+Truy vấn các phần tử: Nếu bạn dell biết gì về jquery thì bạn nên biết về DOM:
+	Truy xuất phần tử bằng nội dung văn bản:
+		cy.contains('New Post')  : tìm 1 một phần tử với nội dung là New Post
+		cy.get('.main').contains('New Post') : tìm phân tử với lớp là main nhưng có nội dung là New Post
+	Cypress hỗ trợ chờ 4s để hoàn thành 1 công việc hay là chờ phần tử xuất hiện...
+		Bạn có thể cài đặt lại nó bằng: defaultCommandTimeout ở file cấu hình 
+		nhưng bạn có thể làm nó nhanh hơn cho 1 phần tử nào đó =)):
+			cy.get('.my-slow-selector', { timeout: 10000 })
+
+Chuỗi lệnh trong Cypress:
+	Cypress hỗ trợ việc tạo ra một loạt hành động cho 1 phần tử
+		=> Chỉ dừng lại khi gặp lỗi hoặc kết thúc lệnh
+	Như bạn đã biết hầu như chúng ta sẽ tác động vào phần tử như click hoặc type
+		cy.get('textarea.post-body').type('This is an excellent post.')
+		Vài hàm có thể bạn sẽ dùng:
+			blur(): làm mờ phần tử đó 
+			focus(): tập trung vào một phần tử
+			clear(): xóa giá trị của input
+			check(): chọn vào checkbox/radiobuton
+			uncheck(): bỏ chọn
+			select(): chọn một option trong <select>
+			dblclick(): nhấn đúp vào một phần tử
+			rightclick(): nhấn chuột phải vào một phần tử
+			selectFile(): chọn một tệp hoặc nhiều tệp để upload lên...
+		Cần check một vài điểm để code có thể thực hiện tốt nhất có thể:
+			Phần tử đó có được hiển thị lên chưa?
+				Cypress có thể kiếm tra tính disabled của một phần tử có phải là true
+			Cần kiểm tra sự cho phép nhập của các thẻ input
+				Cypress có thể check thuộc tính readonly của nó
+			Cần cuộn đến nơi phần tử đó đang đứng để làm việc với nó:
+				Cypress hỗ trợ tự động điều này với tất cả các hàm tương tác nhưng trừ: cy.get() và cy.find()
+				Nó tự động cuộn đến khi nào có thì thôi =.= 
+				Bạn có thể sử dụng scrollBehavior để cuộn thêm nếu phần tử chỉ mới xuất hiện 1 phần
+			Cần xác định bạn cần tương tác với vị trí nào của phần tử:
+				vd: bạn có 1 button rất dài nhưng không muốn click vào giữa nó
+				Bạn có thể tác động bằng cách:
+				cy.get('button').click({ position: 'topLeft' })
+		OK nếu mọi việc đều ổn thì phần tử đã có sự tương tác: 
+			Nhưng nếu: nó chưa ổn thì bạn có thể dùng debug để kiếm tra việc gì xảy ra:
+				cy.get('button').debug().click()
+			Còn nếu đã có sử dụng những điều mà cypress hỗ trợ vẫn không đúng ý bạn:
+				Hãy ép nó thực thi cho bạn:
+				cy.get('button').click({ force: true })
+				Tóm lại : khi ép cypress thực thi bằng force thì tất cả những kiểm tra kể trên đều bị vô hiệu hóa
+
+Khẳng định các yếu tố trong cypress
+	Assertions là các lệnh mô tả mong muốn của ứng dụng của bạn
+	vd: 
+		cy.get(':checkbox').should('be.disabled')
+		cy.get('form').should('have.class', 'form-horizontal')
+		cy.get('input').should('not.have.value', 'US')
+	Quan trọng nhất là cypress sẽ tự động đợi cho đến khi cái này pass.
+
+Quản lý một đối tượng:
+	Từ việc hiểu và sử dụng chuỗi lệnh như trên bạn nhưng sẽ có vài hàm không thể tạo ra chuỗi
+		vd: cy.clearCookies(): xóa tất cả Cookies và trả về null
+	Hầu như tất cả các lệnh đều có thể tương tác thành 1 chuỗi (trừ cái trên hoặc vài cái nữa)
+		Khi muốn tạo ra một luồng lệnh thì có thể nghĩ đến then():
+			Thường sài sau get()
+	Sử dụng bí danh để đặt tên cho chủ thể trước đó:
+		cy.get('.my-selector')
+			.as('myElement') // sets the alias
+			.click()
+		cy.get('@myElement') // re-queries the DOM as before (only if necessary)
+			.click()
+
+Các lệnh không đồng bộ trong cypress (nên cần kiếm người giải thích)
+	Các lệnh cypress là không đồng bộ vì thật ra chúng không làm tại thời điểm đó và chúng được tự xếp hàng để chạy sau đó
+	Còn nữa nha
+	
+Bản chất của việc chạy tuần tự trong cypress:
+	Vẫn chạy từ trên xuống dưới và theo như chuỗi lệnh, nhưng cypress hỗ trợ chờ thêm để đảm bảo mọi thứ đc hoàn thành
+	cy.visit thường là thứ tốn thời gian nhiều nhất
+
+
+	
+
+Writing and Organizing Tests (in docs):
+	E2E:
+	/cypress.config.js
+	/cypress/fixtures/example.json
+	/cypress/support/commands.js
+	/cypress/support/e2e.js
+
+	Component:
+	/cypress.config.js
+	/cypress/fixtures/example.json
+	/cypress/support/commands.js
+	/cypress/support/component.js
+	/cypress/support/component-index.html
+
+	Both:
+	/cypress.config.js
+	/cypress/fixtures/example.json
+	/cypress/support/commands.js
+	/cypress/support/e2e.js
+	/cypress/support/component.js
+	/cypress/support/component-index.html
+	
+	Bạn hoàn toàn có thể cấu hình screenshotsFolder và videosFolder =))
+	Nên lưu các biến môi trường trong: cypress.env.json hoặc cấu hình trong cypress.config.js
+	
+	Cypress hỗ trợ các dạng như js, jsx, ts, tsx, coffee, cjsx
+	các tệp json thường được đặt cypress/fixtures và hầu như chúng là cố định, chúng ta sử dụng nó bằng cy.fixture()
+		
+	Sẽ có nhiều folder đc tạo ra khi chạy test: 
+		cypress/downloads: nơi chứa các file khi downloads chạy test
+		cypress/screenshots: nơi chứa mặc định của ảnh khi chụp ảnh màn hình 
+		cypress/videos: nơi chứa mặc định của video record chạy test
+		
+
